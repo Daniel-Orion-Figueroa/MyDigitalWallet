@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { FirestoreService } from './firestore.service';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { FirestoreService } from './firestore.service';
 
 export interface UserProfile {
   uid: string;

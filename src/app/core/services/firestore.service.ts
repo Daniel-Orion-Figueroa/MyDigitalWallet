@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-  DocumentData,
-  QueryDocumentSnapshot
+    DocumentData,
+    Firestore,
+    QueryDocumentSnapshot,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    setDoc,
+    startAfter,
+    updateDoc,
+    where
 } from '@angular/fire/firestore';
 
 @Injectable({

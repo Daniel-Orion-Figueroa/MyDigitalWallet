@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FirestoreService } from './firestore.service';
 import { AuthService } from './auth.service';
+import { FirestoreService } from './firestore.service';
 
 export interface Card {
   id?: string;

@@ -1,7 +1,7 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, timeout, retry } from 'rxjs/operators';
+import { catchError, retry, timeout } from 'rxjs/operators';
 
 export interface HttpOptions {
   headers?: HttpHeaders | { [header: string]: string | string[] };

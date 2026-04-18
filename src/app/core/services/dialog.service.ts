@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ActionSheetController, PopoverController } from '@ionic/angular';
+import { ActionSheetController, AlertController, PopoverController } from '@ionic/angular';
 
 export interface DialogOptions {
   header?: string;

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ComponentRef } from '@angular/core';
 
 export interface ModalOptions {
   component: ComponentRef<any>;
