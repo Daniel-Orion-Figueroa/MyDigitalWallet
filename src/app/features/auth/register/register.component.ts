@@ -216,8 +216,14 @@ export class RegisterComponent implements OnInit {
   async showVerificationAlert(email: string) {
     const alert = await this.alertController.create({
       header: 'Cuenta Creada',
-      subHeader: '¡Tu cuenta ha sido creada exitosamente!',
-      message: `Hemos enviado un email de verificación a:\n${email}\n\nPor favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.`,
+      message: `
+        <div style="text-align: center;">
+          <p>¡Tu cuenta ha sido creada exitosamente!</p>
+          <p>Hemos enviado un email de verificación a:</p>
+          <p><strong>${email}</strong></p>
+          <p>Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
+        </div>
+      `,
       buttons: [
         {
           text: 'Entendido',
@@ -260,7 +266,24 @@ export class RegisterComponent implements OnInit {
   async showTermsAndConditions() {
     const alert = await this.alertController.create({
       header: 'Términos y Condiciones',
-      message: '1. Aceptación de Términos:\nAl registrarte en MyDigitalWallet, aceptas estos términos y condiciones.\n\n2. Uso del Servicio:\nTe comprometes a usar el servicio de manera responsable y legal.\n\n3. Protección de Datos:\nProtegemos tu información según nuestra política de privacidad.\n\n4. Seguridad:\nEres responsable de mantener segura tu contraseña y credenciales.\n\n5. Limitaciones de Responsabilidad:\nMyDigitalWallet no se hace responsable de pérdidas por uso indebido.',
+      message: `
+        <div style="max-height: 300px; overflow-y: auto;">
+          <h4>1. Aceptación de Términos</h4>
+          <p>Al registrarte en MyDigitalWallet, aceptas estos términos y condiciones.</p>
+          
+          <h4>2. Uso del Servicio</h4>
+          <p>Te comprometes a usar el servicio de manera responsable y legal.</p>
+          
+          <h4>3. Protección de Datos</h4>
+          <p>Protegemos tu información según nuestra política de privacidad.</p>
+          
+          <h4>4. Seguridad</h4>
+          <p>Eres responsable de mantener segura tu contraseña y credenciales.</p>
+          
+          <h4>5. Limitaciones de Responsabilidad</h4>
+          <p>MyDigitalWallet no se hace responsable de pérdidas por uso indebido.</p>
+        </div>
+      `,
       buttons: [
         {
           text: 'Cerrar',
@@ -276,7 +299,24 @@ export class RegisterComponent implements OnInit {
   async showPrivacyPolicy() {
     const alert = await this.alertController.create({
       header: 'Política de Privacidad',
-      message: '1. Información Recopilada:\nRecopilamos información personal necesaria para proporcionar nuestros servicios.\n\n2. Uso de la Información:\nUsamos tu información para operar, mantener y mejorar nuestros servicios.\n\n3. Compartir Información:\nNo vendemos ni compartimos tu información personal con terceros.\n\n4. Seguridad:\nImplementamos medidas de seguridad para proteger tu información.\n\n5. Derechos del Usuario:\nTienes derecho a acceder, corregir o eliminar tu información.',
+      message: `
+        <div style="max-height: 300px; overflow-y: auto;">
+          <h4>1. Información Recopilada</h4>
+          <p>Recopilamos información personal necesaria para proporcionar nuestros servicios.</p>
+          
+          <h4>2. Uso de la Información</h4>
+          <p>Usamos tu información para operar, mantener y mejorar nuestros servicios.</p>
+          
+          <h4>3. Compartir Información</h4>
+          <p>No vendemos ni compartimos tu información personal con terceros.</p>
+          
+          <h4>4. Seguridad</h4>
+          <p>Implementamos medidas de seguridad para proteger tu información.</p>
+          
+          <h4>5. Derechos del Usuario</h4>
+          <p>Tienes derecho a acceder, corregir o eliminar tu información.</p>
+        </div>
+      `,
       buttons: [
         {
           text: 'Cerrar',

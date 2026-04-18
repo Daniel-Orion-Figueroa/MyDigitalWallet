@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getFirestore, doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
 import { GoogleSignIn } from '@capawesome/capacitor-google-sign-in';
 import { NativeBiometric } from 'capacitor-native-biometric';
+import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

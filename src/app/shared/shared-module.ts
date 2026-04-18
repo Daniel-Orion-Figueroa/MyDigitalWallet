@@ -5,12 +5,11 @@ import { RouterModule } from '@angular/router';
 
 // Importar componentes Ionic
 import { IonicModule } from '@ionic/angular';
-import { LoginComponent } from './components/login/login-simple.component';
 
 // Importar componentes standalone
 
 @NgModule({
-  declarations: [], // Los componentes standalone no necesitan declararse
+  declarations: [],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,7 +17,6 @@ import { LoginComponent } from './components/login/login-simple.component';
     RouterModule,
     IonicModule,
     
-    LoginComponent
   ],
   exports: [
     CommonModule,
@@ -27,7 +25,6 @@ import { LoginComponent } from './components/login/login-simple.component';
     IonicModule,
     RouterModule,
 
-    LoginComponent
   ]
 })
 export class SharedModule { }
