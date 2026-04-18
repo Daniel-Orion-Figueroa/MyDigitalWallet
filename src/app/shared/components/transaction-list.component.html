@@ -1,0 +1,8 @@
+<div class="space-y-4">
+    <div *ngFor="let category of getCategories()" class="bg-white rounded-lg shadow p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ category }}</h3>
+        <app-transaction-item *ngFor="let transaction of getTransactionsByCategory(category)"
+            [transaction]="transaction">
+        </app-transaction-item>
+    </div>
+</div>

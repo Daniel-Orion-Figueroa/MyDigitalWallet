@@ -1,0 +1,17 @@
+<div class="grid grid-cols-3 gap-4">
+    <button (click)="onAction('transfer')"
+        class="bg-blue-500 text-white p-4 rounded-lg shadow hover:bg-blue-600 flex flex-col items-center">
+        <ion-icon name="swap-horizontal" size="large"></ion-icon>
+        <span class="mt-2">Transferir</span>
+    </button>
+    <button (click)="onAction('recharge')"
+        class="bg-green-500 text-white p-4 rounded-lg shadow hover:bg-green-600 flex flex-col items-center">
+        <ion-icon name="add-circle" size="large"></ion-icon>
+        <span class="mt-2">Recargar</span>
+    </button>
+    <button (click)="onAction('pay')"
+        class="bg-red-500 text-white p-4 rounded-lg shadow hover:bg-red-600 flex flex-col items-center">
+        <ion-icon name="card" size="large"></ion-icon>
+        <span class="mt-2">Pagar</span>
+    </button>
+</div>

@@ -1,0 +1,13 @@
+<div class="p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold mb-4">Simular Pago</h2>
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+        <app-custom-input label="Monto" type="number" placeholder="0.00" [control]="amountControl">
+        </app-custom-input>
+        <app-custom-input label="Descripción" placeholder="Descripción del pago" [control]="descriptionControl">
+        </app-custom-input>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+            [disabled]="!paymentForm.valid">
+            Procesar Pago
+        </button>
+    </form>
+</div>

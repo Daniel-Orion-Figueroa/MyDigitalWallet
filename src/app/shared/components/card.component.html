@@ -1,0 +1,21 @@
+<div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-lg max-w-sm mx-auto"
+    [ngClass]="{
+       'from-blue-500 to-blue-700': type === 'visa',
+       'from-red-500 to-red-700': type === 'mastercard'
+     }">
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-lg font-bold">{{ type.toUpperCase() }}</span>
+        <span class="text-2xl">{{ type === 'visa' ? '💳' : '💳' }}</span>
+    </div>
+    <div class="text-xl font-mono mb-2">{{ number | cardNumber }}</div>
+    <div class="flex justify-between">
+        <div>
+            <div class="text-xs uppercase">Card Holder</div>
+            <div class="text-sm">{{ holderName }}</div>
+        </div>
+        <div>
+            <div class="text-xs uppercase">Expires</div>
+            <div class="text-sm">{{ expiryDate }}</div>
+        </div>
+    </div>
+</div>
