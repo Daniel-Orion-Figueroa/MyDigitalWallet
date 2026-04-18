@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>Agregar Tarjeta</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+    <div class="add-card-container">
+        <!-- Logo -->
+        <div class="logo-section">
+            <ion-img src="/src/assets/logo/MyDigitalWalletlogo.png" alt="MyDigitalWallet Logo" class="logo"></ion-img>
+            <h2 class="app-title">Agregar Nueva Tarjeta</h2>
+            <p class="app-subtitle">Ingresa los datos de tu tarjeta de crédito o débito</p>
+        </div>
+
+        <!-- Formulario -->
+        <form [formGroup]="cardForm" (ngSubmit)="onSubmit()" class="card-form">
+            <!-- Tipo de Tarjeta -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">Tipo de Tarjeta</ion-label>
+                <ion-select formControlName="cardType" placeholder="Selecciona el tipo">
+                    <ion-select-option value="visa">Visa</ion-select-option>
+                    <ion-select-option value="mastercard">Mastercard</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <!-- Número de Tarjeta -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">Número de Tarjeta</ion-label>
+                <ion-input type="tel" formControlName="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16"
+                    [class.invalid]="isSubmitted && cardNumber?.invalid"></ion-input>
+                <ion-icon name="card-outline" slot="start" color="medium"></ion-icon>
+            </ion-item>
+            <ion-text *ngIf="isSubmitted && cardNumber?.invalid" color="danger" class="error-text">
+                <span *ngIf="cardNumber?.errors?.['required']">El número de tarjeta es requerido</span>
+                <span *ngIf="cardNumber?.errors?.['pattern']">Ingresa un número válido de 16 dígitos</span>
+            </ion-text>
+
+            <!-- Nombre del Titular -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">Nombre del Titular</ion-label>
+                <ion-input type="text" formControlName="holderName" placeholder="Como aparece en la tarjeta"
+                    [class.invalid]="isSubmitted && holderName?.invalid"></ion-input>
+                <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+            </ion-item>
+            <ion-text *ngIf="isSubmitted && holderName?.invalid" color="danger" class="error-text">
+                <span *ngIf="holderName?.errors?.['required']">El nombre es requerido</span>
+                <span *ngIf="holderName?.errors?.['minlength']">Mínimo 2 caracteres</span>
+            </ion-text>
+
+            <!-- Fecha de Expiración -->
+            <div class="expiry-row">
+                <ion-item class="input-item expiry-item">
+                    <ion-label position="floating" color="primary">Mes</ion-label>
+                    <ion-input type="tel" formControlName="expiryMonth" placeholder="MM" maxlength="2"
+                        [class.invalid]="isSubmitted && expiryMonth?.invalid"></ion-input>
+                </ion-item>
+                <ion-item class="input-item expiry-item">
+                    <ion-label position="floating" color="primary">Año</ion-label>
+                    <ion-input type="tel" formControlName="expiryYear" placeholder="YY" maxlength="2"
+                        [class.invalid]="isSubmitted && expiryYear?.invalid"></ion-input>
+                </ion-item>
+            </div>
+            <ion-text *ngIf="isSubmitted && (expiryMonth?.invalid || expiryYear?.invalid)" color="danger"
+                class="error-text">
+                <span *ngIf="expiryMonth?.errors?.['required'] || expiryYear?.errors?.['required']">La fecha de
+                    expiración es requerida</span>
+                <span *ngIf="expiryMonth?.errors?.['pattern'] || expiryYear?.errors?.['pattern']">Formato inválido
+                    (MM/YY)</span>
+            </ion-text>
+
+            <!-- CVV -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">CVV</ion-label>
+                <ion-input type="tel" formControlName="cvv" placeholder="123" maxlength="4"
+                    [class.invalid]="isSubmitted && cvv?.invalid"></ion-input>
+                <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
+            </ion-item>
+            <ion-text *ngIf="isSubmitted && cvv?.invalid" color="danger" class="error-text">
+                <span *ngIf="cvv?.errors?.['required']">El CVV es requerido</span>
+                <span *ngIf="cvv?.errors?.['pattern']">Ingresa un CVV válido (3-4 dígitos)</span>
+            </ion-text>
+
+            <!-- Botón de Agregar -->
+            <ion-button type="submit" expand="block" class="add-card-button" [disabled]="isLoading || cardForm.invalid">
+                <ion-spinner *ngIf="isLoading" name="circles" slot="start"></ion-spinner>
+                {{ isLoading ? 'Agregando...' : 'Agregar Tarjeta' }}
+            </ion-button>
+        </form>
+    </div>
+</ion-content>

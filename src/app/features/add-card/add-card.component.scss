@@ -1,0 +1,81 @@
+.add-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  margin: 0;
+}
+
+.app-subtitle {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  margin: 4px 0 0 0;
+}
+
+.card-form {
+  width: 100%;
+}
+
+.input-item {
+  margin-bottom: 16px;
+  --border-radius: 12px;
+  --highlight-height: 0;
+}
+
+.input-item.invalid {
+  --highlight-color: var(--ion-color-danger);
+}
+
+.expiry-row {
+  display: flex;
+  gap: 12px;
+}
+
+.expiry-item {
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.error-text {
+  font-size: 12px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.add-card-button {
+  margin-top: 24px;
+  --border-radius: 12px;
+  height: 48px;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .add-card-container {
+    padding: 16px;
+  }
+
+  .expiry-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

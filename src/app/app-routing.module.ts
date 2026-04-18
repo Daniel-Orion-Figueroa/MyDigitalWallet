@@ -12,7 +12,15 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./features/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'add-card',
+    loadChildren: () => import('./features/add-card/add-card.module').then(m => m.AddCardModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./features/payment/payment.module').then(m => m.PaymentModule)
   },
   {
     path: '',

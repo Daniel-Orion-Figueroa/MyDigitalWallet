@@ -1,0 +1,97 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>Realizar Pago</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+    <div class="payment-container">
+        <!-- Logo -->
+        <div class="logo-section">
+            <ion-img src="/src/assets/logo/MyDigitalWalletlogo.png" alt="MyDigitalWallet Logo" class="logo"></ion-img>
+            <h2 class="app-title">Realizar Pago</h2>
+            <p class="app-subtitle">Simula un pago con tu tarjeta</p>
+        </div>
+
+        <!-- Formulario de Pago -->
+        <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
+            <!-- Monto -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">Monto a Pagar (COP)</ion-label>
+                <ion-input type="tel" formControlName="amount" placeholder="10000"
+                    [class.invalid]="isSubmitted && amount?.invalid"></ion-input>
+                <ion-icon name="cash-outline" slot="start" color="medium"></ion-icon>
+            </ion-item>
+            <ion-text *ngIf="isSubmitted && amount?.invalid" color="danger" class="error-text">
+                <span *ngIf="amount?.errors?.['required']">El monto es requerido</span>
+                <span *ngIf="amount?.errors?.['min']">El monto mínimo es $1.000</span>
+            </ion-text>
+
+            <!-- Descripción -->
+            <ion-item class="input-item">
+                <ion-label position="floating" color="primary">Descripción del Pago</ion-label>
+                <ion-input type="text" formControlName="description" placeholder="Compra en tienda, restaurante, etc."
+                    [class.invalid]="isSubmitted && description?.invalid"></ion-input>
+                <ion-icon name="document-text-outline" slot="start" color="medium"></ion-icon>
+            </ion-item>
+            <ion-text *ngIf="isSubmitted && description?.invalid" color="danger" class="error-text">
+                <span *ngIf="description?.errors?.['required']">La descripción es requerida</span>
+                <span *ngIf="description?.errors?.['minlength']">Mínimo 3 caracteres</span>
+            </ion-text>
+
+            <!-- Selección de Tarjeta -->
+            <div class="card-selection">
+                <ion-text color="dark">
+                    <h3>Seleccionar Tarjeta</h3>
+                </ion-text>
+                <ion-list *ngIf="cards.length > 0">
+                    <ion-radio-group formControlName="selectedCardId" (ionChange)="onCardChange($event)">
+                        <ion-item *ngFor="let card of cards" class="card-item">
+                            <ion-radio slot="start" [value]="card.id"></ion-radio>
+                            <ion-icon [name]="card.type === 'visa' ? 'card-outline' : 'card-outline'" slot="start"
+                                color="primary"></ion-icon>
+                            <ion-label>
+                                <h2>{{ card.type.toUpperCase() }} ****{{ card.number.slice(-4) }}</h2>
+                                <p>{{ card.holderName }}</p>
+                            </ion-label>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+                <ion-text *ngIf="isSubmitted && selectedCardId?.invalid" color="danger" class="error-text">
+                    <span>Debes seleccionar una tarjeta</span>
+                </ion-text>
+            </div>
+
+            <!-- Resumen del Pago -->
+            <ion-card *ngIf="selectedCard && amount?.value && description?.value" class="payment-summary">
+                <ion-card-header>
+                    <ion-card-title>Resumen del Pago</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="summary-item">
+                        <span>Monto:</span>
+                        <strong>{{ amount?.value | currency:'COP':'symbol':'1.0-0' }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Descripción:</span>
+                        <strong>{{ description?.value }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tarjeta:</span>
+                        <strong>{{ selectedCard.type.toUpperCase() }} ****{{ selectedCard.number.slice(-4) }}</strong>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Botón de Pago -->
+            <ion-button type="submit" expand="block" class="payment-button"
+                [disabled]="isLoading || paymentForm.invalid">
+                <ion-spinner *ngIf="isLoading" name="circles" slot="start"></ion-spinner>
+                {{ isLoading ? 'Procesando...' : 'Realizar Pago' }}
+            </ion-button>
+        </form>
+    </div>
+</ion-content>
