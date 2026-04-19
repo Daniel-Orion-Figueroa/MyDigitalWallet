@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CardService } from './card.service';
 import { FirestoreService } from './firestore.service';
 import { UserService } from './user.service';

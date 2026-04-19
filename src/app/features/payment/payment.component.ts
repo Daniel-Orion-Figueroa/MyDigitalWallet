@@ -2,13 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-
-interface Card {
-  id: string;
-  type: 'visa' | 'mastercard';
-  number: string;
-  holderName: string;
-}
+import { Card, CardService } from '../../core/services/card.service';
+import { PaymentService } from '../../core/services/payment.service';
 
 @Component({
   selector: 'app-payment',
@@ -22,26 +17,15 @@ export class PaymentComponent implements OnInit {
   isLoading = false;
   selectedCard: Card | null = null;
 
-  cards: Card[] = [
-    {
-      id: '1',
-      type: 'visa',
-      number: '4111111111111111',
-      holderName: 'Juan Pérez'
-    },
-    {
-      id: '2',
-      type: 'mastercard',
-      number: '5555555555554444',
-      holderName: 'Juan Pérez'
-    }
-  ];
+  cards: Card[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private cardService: CardService,
+    private paymentService: PaymentService
   ) {
     this.paymentForm = this.formBuilder.group({
       amount: ['', [Validators.required, Validators.min(1000)]],
@@ -51,9 +35,18 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.cards.length > 0) {
-      this.selectedCard = this.cards[0];
-      this.paymentForm.patchValue({ selectedCardId: this.cards[0].id });
+    this.loadCards();
+  }
+
+  async loadCards() {
+    try {
+      this.cards = await this.cardService.getUserCards();
+      if (this.cards.length > 0) {
+        this.selectedCard = this.cards[0];
+        this.paymentForm.patchValue({ selectedCardId: this.cards[0].id });
+      }
+    } catch (error) {
+      console.error('Error cargando tarjetas:', error);
     }
   }
 
@@ -77,12 +70,18 @@ export class PaymentComponent implements OnInit {
       await loading.present();
 
       try {
-        // Simulate payment processing
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        const paymentRequest = {
+          cardId: this.selectedCard.id!,
+          amount: Number(this.amount?.value),
+          description: this.description?.value,
+          merchant: 'Comercio simulado'
+        };
+
+        await this.paymentService.processPayment(paymentRequest);
 
         const alert = await this.alertController.create({
           header: 'Pago Exitoso',
-          message: `Se ha realizado el pago de $${this.amount?.value?.toLocaleString('es-CO')} con la tarjeta ${this.selectedCard.type.toUpperCase()} ****${this.selectedCard.number.slice(-4)}`,
+          message: `Se ha realizado el pago de $${paymentRequest.amount.toLocaleString('es-CO')} con la tarjeta ${this.selectedCard.type.toUpperCase()} ****${this.selectedCard.number.slice(-4)}`,
           buttons: [{
             text: 'OK',
             handler: () => {
@@ -91,10 +90,10 @@ export class PaymentComponent implements OnInit {
           }]
         });
         await alert.present();
-      } catch (error) {
+      } catch (error: any) {
         const alert = await this.alertController.create({
           header: 'Error en el Pago',
-          message: 'No se pudo procesar el pago. Verifica tus datos e intenta nuevamente.',
+          message: error?.message || 'No se pudo procesar el pago. Verifica tus datos e intenta nuevamente.',
           buttons: ['OK']
         });
         await alert.present();

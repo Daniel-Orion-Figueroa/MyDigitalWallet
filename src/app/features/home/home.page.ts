@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-
-interface Card {
-  id: string;
-  type: 'visa' | 'mastercard';
-  number: string;
-  holderName: string;
-  expiryDate: string;
-}
+import { Card, CardService } from '../../core/services/card.service';
+import { UserService } from '../../core/services/user.service';
 
 interface Transaction {
   id: string;
@@ -25,24 +19,9 @@ interface Transaction {
   standalone: false,
 })
 export class HomePage implements OnInit {
-  balance: number = 1500000; // Example balance in COP
+  balance: number = 0;
   showBalance: boolean = true;
-  cards: Card[] = [
-    {
-      id: '1',
-      type: 'visa',
-      number: '4111111111111111',
-      holderName: 'Juan Pérez',
-      expiryDate: '12/25'
-    },
-    {
-      id: '2',
-      type: 'mastercard',
-      number: '5555555555554444',
-      holderName: 'Juan Pérez',
-      expiryDate: '08/26'
-    }
-  ];
+  cards: Card[] = [];
   transactions: Transaction[] = [
     {
       id: '1',
@@ -62,11 +41,14 @@ export class HomePage implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cardService: CardService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    // Load user data, cards, transactions from service
+    this.loadUserData();
+    this.loadCards();
   }
 
   toggleBalanceVisibility() {
@@ -81,8 +63,22 @@ export class HomePage implements OnInit {
     this.router.navigate(['/payment']);
   }
 
+  async loadUserData() {
+    const user = this.userService.getCurrentUser();
+    if (user) {
+      this.balance = user.balance;
+    }
+  }
+
+  async loadCards() {
+    try {
+      this.cards = await this.cardService.getUserCards();
+    } catch (error) {
+      console.error('Error cargando tarjetas:', error);
+    }
+  }
+
   selectCard(card: Card) {
-    // Handle card selection, maybe navigate to card details
     console.log('Selected card:', card);
   }
 

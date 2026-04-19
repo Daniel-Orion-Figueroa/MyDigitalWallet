@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from './auth.service';
 import { FirestoreService } from './firestore.service';
 
@@ -20,10 +21,8 @@ export interface Card {
   providedIn: 'root'
 })
 export class CardService {
-  constructor(
-    private firestoreService: FirestoreService,
-    private authService: AuthService
-  ) {}
+  private firestoreService = inject(FirestoreService);
+  private authService = inject(AuthService);
 
   // Luhn Algorithm for card number validation
   private validateCardNumber(cardNumber: string): boolean {
@@ -103,7 +102,7 @@ export class CardService {
   // Add new card
   async addCard(cardData: Omit<Card, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<string> {
     try {
-      const currentUser = await this.authService.getCurrentUser().toPromise();
+      const currentUser = await firstValueFrom(this.authService.getCurrentUser());
       if (!currentUser) throw new Error('Usuario no autenticado');
 
       const validation = this.validateCard(cardData);
@@ -140,7 +139,7 @@ export class CardService {
   // Get user's cards
   async getUserCards(): Promise<Card[]> {
     try {
-      const currentUser = await this.authService.getCurrentUser().toPromise();
+      const currentUser = await firstValueFrom(this.authService.getCurrentUser());
       if (!currentUser) throw new Error('Usuario no autenticado');
 
       const cards = await this.firestoreService.getCollection(
@@ -187,7 +186,7 @@ export class CardService {
   // Set default card
   async setDefaultCard(cardId: string): Promise<void> {
     try {
-      const currentUser = await this.authService.getCurrentUser().toPromise();
+      const currentUser = await firstValueFrom(this.authService.getCurrentUser());
       if (!currentUser) throw new Error('Usuario no autenticado');
 
       // Remove default from all user cards

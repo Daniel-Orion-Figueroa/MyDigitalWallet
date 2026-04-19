@@ -81,12 +81,11 @@ export class ToastService {
   }
 
   // Show loading toast
-  async showLoading(message: string = 'Cargando...', duration: number = 0): Promise<HTMLIonToastElement> {
+  async showLoading(message: string = 'Cargando...', duration: number = 0): Promise<HTMLIonToastElement | undefined> {
     const toast = await this.toastController.create({
       message,
       duration,
       position: 'bottom',
-      spinner: 'circles',
       cssClass: 'loading-toast'
     });
     await toast.present();
@@ -157,7 +156,7 @@ export class ToastService {
   }
 
   // Get active toast
-  async getTop(): Promise<HTMLIonToastElement | null> {
+  async getTop(): Promise<HTMLIonToastElement | undefined> {
     return await this.toastController.getTop();
   }
 }

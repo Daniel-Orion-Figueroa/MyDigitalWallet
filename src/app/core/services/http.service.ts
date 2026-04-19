@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, timeout } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 export interface HttpOptions {
   headers?: HttpHeaders | { [header: string]: string | string[] };
@@ -35,9 +36,9 @@ export class HttpService {
     options?: HttpOptions,
     retries: number = this.MAX_RETRIES
   ): Observable<T> {
-    const requestOptions = this.buildOptions(options);
+    const requestOptions = this.buildOptions(options) as any;
 
-    return this.http.get<T>(url, requestOptions).pipe(
+    return (this.http.get<T>(url, requestOptions) as Observable<T>).pipe(
       timeout(options?.timeout || this.DEFAULT_TIMEOUT),
       retry(retries),
       catchError(this.handleError)
@@ -51,9 +52,9 @@ export class HttpService {
     options?: HttpOptions,
     retries: number = this.MAX_RETRIES
   ): Observable<T> {
-    const requestOptions = this.buildOptions(options);
+    const requestOptions = this.buildOptions(options) as any;
 
-    return this.http.post<T>(url, body, requestOptions).pipe(
+    return (this.http.post<T>(url, body, requestOptions) as Observable<T>).pipe(
       timeout(options?.timeout || this.DEFAULT_TIMEOUT),
       retry(retries),
       catchError(this.handleError)
@@ -67,9 +68,9 @@ export class HttpService {
     options?: HttpOptions,
     retries: number = this.MAX_RETRIES
   ): Observable<T> {
-    const requestOptions = this.buildOptions(options);
+    const requestOptions = this.buildOptions(options) as any;
 
-    return this.http.put<T>(url, body, requestOptions).pipe(
+    return (this.http.put<T>(url, body, requestOptions) as Observable<T>).pipe(
       timeout(options?.timeout || this.DEFAULT_TIMEOUT),
       retry(retries),
       catchError(this.handleError)
@@ -83,9 +84,9 @@ export class HttpService {
     options?: HttpOptions,
     retries: number = this.MAX_RETRIES
   ): Observable<T> {
-    const requestOptions = this.buildOptions(options);
+    const requestOptions = this.buildOptions(options) as any;
 
-    return this.http.patch<T>(url, body, requestOptions).pipe(
+    return (this.http.patch<T>(url, body, requestOptions) as Observable<T>).pipe(
       timeout(options?.timeout || this.DEFAULT_TIMEOUT),
       retry(retries),
       catchError(this.handleError)
@@ -98,9 +99,9 @@ export class HttpService {
     options?: HttpOptions,
     retries: number = this.MAX_RETRIES
   ): Observable<T> {
-    const requestOptions = this.buildOptions(options);
+    const requestOptions = this.buildOptions(options) as any;
 
-    return this.http.delete<T>(url, requestOptions).pipe(
+    return (this.http.delete<T>(url, requestOptions) as Observable<T>).pipe(
       timeout(options?.timeout || this.DEFAULT_TIMEOUT),
       retry(retries),
       catchError(this.handleError)
@@ -108,7 +109,7 @@ export class HttpService {
   }
 
   // Build HTTP options
-  private buildOptions(options?: HttpOptions): HttpOptions {
+  private buildOptions(options?: HttpOptions): any {
     const defaultHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -119,7 +120,8 @@ export class HttpService {
       params: options?.params,
       reportProgress: options?.reportProgress || false,
       responseType: options?.responseType || 'json',
-      withCredentials: options?.withCredentials || false
+      withCredentials: options?.withCredentials || false,
+      observe: 'body' as const
     };
   }
 
@@ -164,79 +166,56 @@ export class HttpService {
   };
 
   // API endpoints for notifications
-  private readonly NOTIFICATIONS_API = 'https://api.mydigitalwallet.com/notifications';
+  private readonly NOTIFICATIONS_API = environment.notificationApiUrl;
 
-  // Send push notification
+  private buildAuthHeaders(token?: string): HttpHeaders {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    if (token) {
+      headers = headers.set('Authorization', token);
+    }
+
+    return headers;
+  }
+
+  // Authenticate against the notifications backend and return the JWT token
+  loginToNotificationApi(email: string, password: string): Observable<ApiResponse<{ token: string }>> {
+    const payload = { email, password };
+    return this.post<ApiResponse<{ token: string }>>(`${this.NOTIFICATIONS_API}/user/login`, payload);
+  }
+
+  // Send push notification via the backend API
   sendPushNotification(
-    userId: string,
+    fcmToken: string,
     title: string,
-    message: string,
-    data?: any
-  ): Observable<ApiResponse> {
-    const payload = {
-      userId,
-      title,
-      message,
-      data,
-      type: 'push'
-    };
-
-    return this.post<ApiResponse>(`${this.NOTIFICATIONS_API}/push`, payload);
-  }
-
-  // Send email notification
-  sendEmailNotification(
-    userId: string,
-    subject: string,
     body: string,
-    template?: string
+    data?: Record<string, any>,
+    token?: string
   ): Observable<ApiResponse> {
     const payload = {
-      userId,
-      subject,
-      body,
-      template,
-      type: 'email'
+      token: fcmToken,
+      notification: {
+        title,
+        body
+      },
+      android: {
+        priority: 'high',
+        data: data || {}
+      }
     };
 
-    return this.post<ApiResponse>(`${this.NOTIFICATIONS_API}/email`, payload);
+    return this.post<ApiResponse>(`${this.NOTIFICATIONS_API}/notifications/`, payload, {
+      headers: this.buildAuthHeaders(token)
+    });
   }
 
-  // Send SMS notification
-  sendSMSNotification(
-    userId: string,
-    message: string
-  ): Observable<ApiResponse> {
-    const payload = {
-      userId,
-      message,
-      type: 'sms'
-    };
-
-    return this.post<ApiResponse>(`${this.NOTIFICATIONS_API}/sms`, payload);
-  }
-
-  // Get notification history
-  getNotificationHistory(
-    userId: string,
-    limit: number = 50,
-    offset: number = 0
-  ): Observable<ApiResponse> {
-    const params = new HttpParams()
-      .set('userId', userId)
-      .set('limit', limit.toString())
-      .set('offset', offset.toString());
-
-    return this.get<ApiResponse>(`${this.NOTIFICATIONS_API}/history`, { params });
-  }
-
-  // Mark notification as read
-  markNotificationAsRead(notificationId: string): Observable<ApiResponse> {
-    return this.patch<ApiResponse>(`${this.NOTIFICATIONS_API}/${notificationId}/read`, {});
-  }
-
-  // Delete notification
-  deleteNotification(notificationId: string): Observable<ApiResponse> {
-    return this.delete<ApiResponse>(`${this.NOTIFICATIONS_API}/${notificationId}`);
+  // Send generic notification (useful for future types)
+  sendNotification(payload: any, token?: string): Observable<ApiResponse> {
+    return this.post<ApiResponse>(`${this.NOTIFICATIONS_API}/notifications/`, payload, {
+      headers: this.buildAuthHeaders(token)
+    });
   }
 }

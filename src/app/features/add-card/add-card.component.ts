@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { CardService } from '../../core/services/card.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-card',
@@ -18,7 +20,9 @@ export class AddCardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private cardService: CardService,
+    private toastService: ToastService
   ) {
     this.cardForm = this.formBuilder.group({
       cardType: ['visa', [Validators.required]],
@@ -50,27 +54,22 @@ export class AddCardComponent implements OnInit {
       await loading.present();
 
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        const cardData = {
+          type: this.cardForm.value.cardType as 'visa' | 'mastercard' | 'amex',
+          number: this.cardForm.value.cardNumber,
+          holderName: this.cardForm.value.holderName,
+          expiryMonth: this.cardForm.value.expiryMonth,
+          expiryYear: this.cardForm.value.expiryYear,
+          cvv: this.cardForm.value.cvv,
+          isDefault: false
+        };
 
-        const alert = await this.alertController.create({
-          header: 'Éxito',
-          message: 'Tarjeta agregada correctamente',
-          buttons: [{
-            text: 'OK',
-            handler: () => {
-              this.router.navigate(['/home']);
-            }
-          }]
-        });
-        await alert.present();
-      } catch (error) {
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: 'No se pudo agregar la tarjeta. Inténtalo de nuevo.',
-          buttons: ['OK']
-        });
-        await alert.present();
+        await this.cardService.addCard(cardData);
+
+        await this.toastService.showSuccess('Tarjeta agregada correctamente');
+        this.router.navigate(['/home']);
+      } catch (error: any) {
+        await this.toastService.showError(error.message || 'Error al agregar la tarjeta');
       } finally {
         this.isLoading = false;
         await loading.dismiss();

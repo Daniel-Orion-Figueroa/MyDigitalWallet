@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { FirestoreService } from './firestore.service';
@@ -30,11 +30,19 @@ export class UserService {
   private currentUserSubject = new BehaviorSubject<UserProfile | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(
-    private firestoreService: FirestoreService,
-    private authService: AuthService
-  ) {
-    // Load user profile when auth state changes
+  private firestoreService = inject(FirestoreService);
+  private authService = inject(AuthService);
+  private isInitialized = false;
+
+  constructor() {
+    // Initialize auth subscription lazily on first access
+    this.initializeAuthSubscription();
+  }
+
+  private initializeAuthSubscription(): void {
+    if (this.isInitialized) return;
+    this.isInitialized = true;
+
     this.authService.getCurrentUser().subscribe(user => {
       if (user) {
         this.loadUserProfile(user.uid);
