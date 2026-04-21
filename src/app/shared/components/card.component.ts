@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { Card } from '../../core/services/card.service';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss'],
   standalone: false
 })
 export class CardComponent {
-  @Input() type: 'visa' | 'mastercard' = 'visa';
-  @Input() number: string = '';
-  @Input() holderName: string = '';
-  @Input() expiryDate: string = '';
+  @Input() card!: Card;
 }

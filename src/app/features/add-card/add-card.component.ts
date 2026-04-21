@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { CardService } from '../../core/services/card.service';
+import { CardService, Card } from '../../core/services/card.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
@@ -34,7 +34,20 @@ export class AddCardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Detectar automáticamente el tipo de tarjeta basándose en los primeros dígitos
+    this.cardForm.get('cardNumber')?.valueChanges.subscribe(value => {
+      if (value) {
+        if (/^4/.test(value)) {
+          this.cardForm.get('cardType')?.setValue('visa');
+        } else if (/^5[1-5]/.test(value) || /^2[2-7]/.test(value)) {
+          this.cardForm.get('cardType')?.setValue('mastercard');
+        } else if (/^3[47]/.test(value)) {
+          this.cardForm.get('cardType')?.setValue('amex');
+        }
+      }
+    });
+  }
 
   get cardType() { return this.cardForm.get('cardType'); }
   get cardNumber() { return this.cardForm.get('cardNumber'); }
@@ -42,6 +55,22 @@ export class AddCardComponent implements OnInit {
   get expiryMonth() { return this.cardForm.get('expiryMonth'); }
   get expiryYear() { return this.cardForm.get('expiryYear'); }
   get cvv() { return this.cardForm.get('cvv'); }
+
+  getPreviewCard(): Card {
+    const vals = this.cardForm.value;
+    return {
+      userId: 'preview',
+      type: vals.cardType || 'visa',
+      number: vals.cardNumber || '0000000000000000',
+      holderName: vals.holderName || 'JOHN DOE',
+      expiryMonth: vals.expiryMonth || '00',
+      expiryYear: vals.expiryYear || '00',
+      cvv: vals.cvv || '000',
+      isDefault: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
 
   async onSubmit() {
     this.isSubmitted = true;

@@ -30,11 +30,12 @@ export class UserService {
   private currentUserSubject = new BehaviorSubject<UserProfile | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private firestoreService = inject(FirestoreService);
-  private authService = inject(AuthService);
   private isInitialized = false;
 
-  constructor() {
+  constructor(
+    private firestoreService: FirestoreService,
+    private authService: AuthService
+  ) {
     // Initialize auth subscription lazily on first access
     this.initializeAuthSubscription();
   }

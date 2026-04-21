@@ -1,81 +1,103 @@
+.curved-header-bg {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+.header-content {
+  margin-left: 20px;
+  margin-top: 40px;
+}
+
+.header-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin: 0;
+}
+
 .add-card-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  max-width: 500px;
-  margin: 0 auto;
+  margin-top: -30px;
+  z-index: 10;
+  position: relative;
 }
 
-.logo-section {
-  text-align: center;
-  margin-bottom: 30px;
+.preview-section {
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 25px;
 }
 
-.logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 12px;
+.form-wrapper {
+  width: 100%;
+  max-width: 450px;
 }
 
-.app-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--ion-color-primary);
-  margin: 0;
+.input-row {
+  margin-bottom: 0;
 }
 
-.app-subtitle {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  margin: 4px 0 0 0;
+.padding-right-sm {
+  padding-right: 8px !important;
 }
 
-.card-form {
+.padding-left-sm {
+  padding-left: 8px !important;
+}
+
+.padding-horizontal-sm {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.input-group {
+  margin-bottom: 20px;
   width: 100%;
 }
 
-.input-item {
-  margin-bottom: 16px;
-  --border-radius: 12px;
-  --highlight-height: 0;
-}
-
-.input-item.invalid {
-  --highlight-color: var(--ion-color-danger);
-}
-
-.expiry-row {
-  display: flex;
-  gap: 12px;
-}
-
-.expiry-item {
-  flex: 1;
-  margin-bottom: 16px;
-}
-
-.error-text {
-  font-size: 12px;
-  margin-top: -8px;
+.premium-label {
+  color: #a1a7af;
+  font-size: 13px;
   margin-bottom: 8px;
-  display: block;
+  font-weight: 500;
 }
 
-.add-card-button {
-  margin-top: 24px;
-  --border-radius: 12px;
-  height: 48px;
+.text-center {
+  --padding-start: 0;
+  text-align: center;
+}
+
+.font-monospace {
+  font-family: 'Courier New', Courier, monospace;
   font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 2px;
 }
 
-@media (max-width: 480px) {
-  .add-card-container {
-    padding: 16px;
-  }
+.text-uppercase {
+  text-transform: uppercase;
+}
 
-  .expiry-row {
-    flex-direction: column;
-    gap: 0;
-  }
+.error-msg {
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  margin-top: 5px;
 }

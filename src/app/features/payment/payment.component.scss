@@ -1,101 +1,183 @@
+.curved-header-bg {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+.header-content {
+  margin-left: 20px;
+  margin-top: 40px;
+}
+
+.header-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin: 0;
+}
+
 .payment-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  max-width: 500px;
-  margin: 0 auto;
+  margin-top: -30px;
+  z-index: 10;
+  position: relative;
 }
 
-.logo-section {
-  text-align: center;
-  margin-bottom: 30px;
+.form-wrapper {
+  width: 100%;
+  max-width: 450px;
 }
 
-.logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 12px;
-}
-
-.app-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--ion-color-primary);
-  margin: 0;
-}
-
-.app-subtitle {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  margin: 4px 0 0 0;
-}
-
-.payment-form {
+.input-group {
+  margin-bottom: 20px;
   width: 100%;
 }
 
-.input-item {
-  margin-bottom: 16px;
-  --border-radius: 12px;
-  --highlight-height: 0;
-}
-
-.input-item.invalid {
-  --highlight-color: var(--ion-color-danger);
-}
-
-.error-text {
-  font-size: 12px;
-  margin-top: -8px;
+.premium-label {
+  color: #a1a7af;
+  font-size: 13px;
   margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.text-center {
+  text-align: center;
   display: block;
 }
 
-.card-selection {
-  margin: 24px 0;
+.amount-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.card-selection h3 {
-  margin-bottom: 16px;
-  font-size: 16px;
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.currency-symbol {
+  font-size: 42px;
+  font-weight: 700;
+  color: white;
+  margin-right: 5px;
+}
+
+.massive-amount-input {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: auto;
+  text-align: left;
+}
+
+.card-selection-group {
+  margin-top: 10px;
+}
+
+.card-option {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.card-option.selected {
+  background: rgba(0, 210, 255, 0.1);
+  border-color: #00d2ff;
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+}
+
+.hidden-radio {
+  display: none;
+}
+
+.card-option-content {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.card-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.card-icon-wrapper ion-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.card-details h4 {
+  margin: 0 0 5px 0;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--ion-color-dark);
+  color: white;
+  letter-spacing: 1px;
 }
 
-.card-item {
-  --border-radius: 12px;
-  margin-bottom: 8px;
-  --inner-padding-end: 16px;
+.card-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #a1a7af;
 }
 
-.payment-summary {
-  margin: 24px 0;
-  --background: var(--ion-color-light);
+.check-icon {
+  position: absolute;
+  right: 15px;
+  font-size: 24px;
+}
+
+.empty-cards-msg {
+  text-align: center;
+  color: #a1a7af;
+  padding: 20px;
+  font-size: 14px;
+  background: rgba(255,255,255,0.05);
   border-radius: 12px;
 }
 
-.summary-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 14px;
+.error-msg {
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  margin-top: 5px;
 }
 
-.summary-item:last-child {
-  margin-bottom: 0;
-}
-
-.payment-button {
-  margin-top: 24px;
-  --border-radius: 12px;
-  height: 48px;
-  font-weight: 600;
-  --background: var(--ion-color-success);
-}
-
-@media (max-width: 480px) {
-  .payment-container {
-    padding: 16px;
-  }
+.payment-btn {
+  height: 54px;
+  font-size: 16px;
+  letter-spacing: 1px;
 }

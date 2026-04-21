@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { Card, CardService } from '../../core/services/card.service';
 import { UserService } from '../../core/services/user.service';
+import { Observable } from 'rxjs';
 
 interface Transaction {
   id: string;
@@ -22,17 +23,18 @@ export class HomePage implements OnInit {
   balance: number = 0;
   showBalance: boolean = true;
   cards: Card[] = [];
+  currentUser$: Observable<any>;
   transactions: Transaction[] = [
     {
       id: '1',
-      description: 'Compra en Supermercado',
+      description: 'Supermarket',
       amount: 150000,
       type: 'expense',
       date: new Date()
     },
     {
       id: '2',
-      description: 'Depósito Salarial',
+      description: 'Salary Deposit',
       amount: 2000000,
       type: 'income',
       date: new Date(Date.now() - 86400000)
@@ -44,7 +46,9 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private cardService: CardService,
     private userService: UserService
-  ) {}
+  ) {
+    this.currentUser$ = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.loadUserData();
@@ -61,6 +65,11 @@ export class HomePage implements OnInit {
 
   goToPayment() {
     this.router.navigate(['/payment']);
+  }
+
+  openProfile() {
+    // Aquí abriremos el Modal del Profile más adelante
+    console.log("Abrir perfil");
   }
 
   async loadUserData() {

@@ -1,246 +1,98 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Iniciar Sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="login-container">
-    <!-- Logo -->
-    <div class="logo-section">
-      <ion-img src="/src/assets/logo/MyDigitalWalletlogo.png" alt="MyDigitalWallet Logo" class="logo"></ion-img>
-      <h2 class="app-title">MyDigitalWallet</h2>
-      <p class="app-subtitle">Tu billetera digital segura</p>
+<ion-content [fullscreen]="true">
+  <!-- Header curvo -->
+  <div class="curved-header-bg ion-padding-top ion-padding-horizontal">
+    <div class="header-content ion-margin-top ion-margin-bottom">
+      <h1 class="header-title">Sign in to your<br>Account</h1>
+      <p class="header-subtitle">Sign in to your Account</p>
     </div>
+  </div>
 
-    <!-- Formulario de Login -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <!-- Email -->
-      <ion-item class="input-item">
-        <ion-label position="floating" color="primary">Correo Electrónico</ion-label>
-        <ion-input 
-          type="email" 
-          formControlName="email" 
-          placeholder="tu@email.com"
-          autocomplete="email"
-          [class.invalid]="isSubmitted && email?.invalid"
-        ></ion-input>
-        <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
-      </ion-item>
+  <div class="login-container ion-padding">
+    <!-- Formulario de Login (Glass Panel) -->
+    <div class="glass-panel ion-padding form-wrapper">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Email</ion-label>
+          <ion-input 
+            class="premium-input"
+            type="email" 
+            formControlName="email" 
+            placeholder="example@gmail.com"
+            autocomplete="email"
+          ></ion-input>
+          <!-- Error de Email -->
+          <div class="error-msg" *ngIf="isSubmitted && email?.invalid">
+            <span *ngIf="email?.errors?.['required']">Email is required</span>
+            <span *ngIf="email?.errors?.['email']">Invalid email address</span>
+          </div>
+        </div>
 
-      <!-- Error de Email -->
-      <ion-text 
-        *ngIf="isSubmitted && email?.invalid" 
-        color="danger" 
-        class="error-text"
-      >
-        <span *ngIf="email?.errors?.['required']">El email es requerido</span>
-        <span *ngIf="email?.errors?.['email']">El email no es válido</span>
-      </ion-text>
+        <!-- Contraseña -->
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Password</ion-label>
+          <div class="password-wrapper">
+            <ion-input 
+              class="premium-input"
+              [type]="showPassword ? 'text' : 'password'" 
+              formControlName="password" 
+              placeholder="••••••••"
+              autocomplete="current-password"
+            ></ion-input>
+            <ion-button 
+              fill="clear" 
+              class="eye-btn"
+              (click)="togglePasswordVisibility()"
+            >
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" color="medium"></ion-icon>
+            </ion-button>
+          </div>
+          <!-- Error de Contraseña -->
+          <div class="error-msg" *ngIf="isSubmitted && password?.invalid">
+            <span *ngIf="password?.errors?.['required']">Password is required</span>
+            <span *ngIf="password?.errors?.['minlength']">Min 6 characters</span>
+          </div>
+        </div>
 
-      <!-- Contraseña -->
-      <ion-item class="input-item">
-        <ion-label position="floating" color="primary">Contraseña</ion-label>
-        <ion-input 
-          [type]="showPassword ? 'text' : 'password'" 
-          formControlName="password" 
-          placeholder="Tu contraseña"
-          autocomplete="current-password"
-          [class.invalid]="isSubmitted && password?.invalid"
-        ></ion-input>
-        <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
+        <div class="forgot-pwd">
+          <a class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <!-- Botón de Login -->
         <ion-button 
-          slot="end" 
-          fill="clear" 
-          size="small" 
-          (click)="togglePasswordVisibility()"
-          color="medium"
+          type="submit" 
+          expand="block" 
+          class="premium-btn ion-margin-top"
+          [disabled]="isLoading || loginForm.invalid"
         >
-          <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          <ion-spinner *ngIf="isLoading" name="crescent" slot="start"></ion-spinner>
+          {{ isLoading ? 'LOGGING IN...' : 'LOGIN' }}
         </ion-button>
-      </ion-item>
+      </form>
 
-      <!-- Error de Contraseña -->
-      <ion-text 
-        *ngIf="isSubmitted && password?.invalid" 
-        color="danger" 
-        class="error-text"
-      >
-        <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
-        <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
-      </ion-text>
+      <!-- Separador -->
+      <div class="divider">
+        <ion-text>Or login with</ion-text>
+      </div>
 
-      <!-- Botón de Login -->
+      <!-- Botón de Google -->
       <ion-button 
-        type="submit" 
         expand="block" 
-        class="login-button"
-        [disabled]="isLoading || loginForm.invalid"
+        class="google-btn"
+        (click)="loginWithGoogle()"
+        [disabled]="isLoading"
       >
-        <ion-spinner *ngIf="isLoading" name="circles" slot="start"></ion-spinner>
-        {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        GOOGLE
       </ion-button>
-    </form>
-
-    <!-- Separador -->
-    <div class="divider">
-      <ion-text>O continúa con</ion-text>
     </div>
-
-    <!-- Botón de Google -->
-    <ion-button 
-      expand="block" 
-      fill="outline" 
-      class="google-button"
-      (click)="loginWithGoogle()"
-      [disabled]="isLoading"
-    >
-      <ion-icon name="logo-google" slot="start"></ion-icon>
-      Iniciar con Google
-    </ion-button>
 
     <!-- Enlace a Registro -->
-    <div class="register-link">
+    <div class="register-link ion-margin-top">
       <ion-text color="medium">
-        ¿No tienes cuenta? 
-        <ion-button 
-          fill="clear" 
-          size="small" 
-          (click)="goToRegister()"
-          color="primary"
-        >
-          Regístrate aquí
-        </ion-button>
+        Don't have an account? 
+        <a (click)="goToRegister()" class="action-link">Register</a>
       </ion-text>
     </div>
   </div>
 </ion-content>
-
-<style>
-.login-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100%;
-  padding: 20px;
-}
-
-.logo-section {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 16px;
-}
-
-.app-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--ion-color-primary);
-  margin: 0;
-}
-
-.app-subtitle {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  margin: 8px 0 0 0;
-}
-
-.login-form {
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 24px;
-}
-
-.input-item {
-  margin-bottom: 16px;
-  --border-radius: 12px;
-  --highlight-height: 0;
-}
-
-.input-item.invalid {
-  --highlight-color: var(--ion-color-danger);
-}
-
-.error-text {
-  font-size: 12px;
-  margin-top: -8px;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.login-button {
-  margin-top: 24px;
-  --border-radius: 12px;
-  height: 48px;
-  font-weight: 600;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 24px 0;
-  position: relative;
-}
-
-.divider::before {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--ion-color-light);
-}
-
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--ion-color-light);
-}
-
-.divider ion-text {
-  padding: 0 16px;
-  font-size: 12px;
-  color: var(--ion-color-medium);
-}
-
-.google-button {
-  --border-radius: 12px;
-  height: 48px;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.forgot-password {
-  text-align: center;
-  margin: 16px 0;
-}
-
-.register-link {
-  text-align: center;
-  margin-top: 32px;
-}
-
-.register-link ion-button {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-@media (max-width: 480px) {
-  .login-container {
-    padding: 16px;
-  }
-  
-  .logo {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .app-title {
-    font-size: 20px;
-  }
-}
-</style>

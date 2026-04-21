@@ -1,0 +1,113 @@
+.card-container {
+  width: 100%;
+  aspect-ratio: 1.586; /* Credit card standard ratio */
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  color: white;
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+}
+
+.empty-card {
+  background: #1e2023;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Gradients for Card Types */
+.card-visa {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+.card-mastercard {
+  background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+}
+
+.card-amex {
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+}
+
+/* Glass overlay for the frosty look */
+.card-glass-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-type {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-style: italic;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.card-logo ion-icon {
+  font-size: 36px;
+  opacity: 0.9;
+}
+
+.card-chip {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.card-chip ion-icon {
+  font-size: 32px;
+  color: #ffd700; /* Gold chip */
+}
+
+.contactless-icon {
+  font-size: 24px !important;
+  color: white !important;
+  opacity: 0.8;
+  transform: rotate(90deg);
+}
+
+.card-number {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  margin-top: 10px;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.info-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}

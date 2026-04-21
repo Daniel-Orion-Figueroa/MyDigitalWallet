@@ -1,411 +1,107 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Crear Cuenta</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
+<ion-content [fullscreen]="true">
+  <!-- Header curvo con botón de atrás -->
+  <div class="curved-header-bg ion-padding-top ion-padding-horizontal">
+    <ion-buttons class="back-btn-container">
+      <ion-back-button defaultHref="/login" color="light" text=""></ion-back-button>
     </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="register-container">
-    <!-- Logo -->
-    <div class="logo-section">
-      <ion-img src="/src/assets/logo/MyDigitalWalletlogo.png" alt="MyDigitalWallet Logo" class="logo"></ion-img>
-      <h2 class="app-title">MyDigitalWallet</h2>
-      <p class="app-subtitle">Crea tu billetera digital segura</p>
+    <div class="header-content ion-margin-top ion-margin-bottom">
+      <h1 class="header-title">Register</h1>
+      <p class="header-subtitle">Create your account</p>
     </div>
+  </div>
 
-    <!-- Formulario de Registro -->
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-      <!-- Información Personal -->
-      <div class="form-section">
-        <h3 class="section-title">Información Personal</h3>
+  <div class="register-container ion-padding">
+    <div class="glass-panel ion-padding form-wrapper">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         
-        <!-- Nombre -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Nombres</ion-label>
-          <ion-input 
-            type="text" 
-            formControlName="firstName" 
-            placeholder="Tus nombres"
-            autocomplete="given-name"
-            [class.invalid]="isSubmitted && firstName?.invalid"
-          ></ion-input>
-          <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
+        <!-- Fila de Nombres -->
+        <ion-row class="input-row">
+          <ion-col size="6" class="ion-no-padding padding-right-sm">
+            <div class="input-group">
+              <ion-label position="stacked" class="premium-label">First Name</ion-label>
+              <ion-input class="premium-input" type="text" formControlName="firstName" placeholder="Ferdinand"></ion-input>
+            </div>
+          </ion-col>
+          <ion-col size="6" class="ion-no-padding padding-left-sm">
+            <div class="input-group">
+              <ion-label position="stacked" class="premium-label">Last Name</ion-label>
+              <ion-input class="premium-input" type="text" formControlName="lastName" placeholder="Sinaga"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
 
-        <!-- Error de Nombre -->
-        <ion-text 
-          *ngIf="isSubmitted && firstName?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="firstName?.errors?.['required']">Los nombres son requeridos</span>
-          <span *ngIf="firstName?.errors?.['minlength']">Mínimo 2 caracteres</span>
-        </ion-text>
-
-        <!-- Apellido -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Apellidos</ion-label>
-          <ion-input 
-            type="text" 
-            formControlName="lastName" 
-            placeholder="Tus apellidos"
-            autocomplete="family-name"
-            [class.invalid]="isSubmitted && lastName?.invalid"
-          ></ion-input>
-          <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-
-        <!-- Error de Apellido -->
-        <ion-text 
-          *ngIf="isSubmitted && lastName?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="lastName?.errors?.['required']">Los apellidos son requeridos</span>
-          <span *ngIf="lastName?.errors?.['minlength']">Mínimo 2 caracteres</span>
-        </ion-text>
-      </div>
-
-      <!-- Información de Contacto -->
-      <div class="form-section">
-        <h3 class="section-title">Información de Contacto</h3>
-        
-        <!-- Email -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Correo Electrónico</ion-label>
-          <ion-input 
-            type="email" 
-            formControlName="email" 
-            placeholder="tu@email.com"
-            autocomplete="email"
-            [class.invalid]="isSubmitted && email?.invalid"
-          ></ion-input>
-          <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-
-        <!-- Error de Email -->
-        <ion-text 
-          *ngIf="isSubmitted && email?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="email?.errors?.['required']">El email es requerido</span>
-          <span *ngIf="email?.errors?.['email']">El email no es válido</span>
-        </ion-text>
-
-        <!-- Teléfono -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Teléfono (opcional)</ion-label>
-          <ion-input 
-            type="tel" 
-            formControlName="phone" 
-            placeholder="+57 300 123 4567"
-            autocomplete="tel"
-          ></ion-input>
-          <ion-icon name="call-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-
-        <!-- Error de Teléfono -->
-        <ion-text 
-          *ngIf="isSubmitted && phone?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="phone?.errors?.['pattern']">Formato de teléfono inválido</span>
-        </ion-text>
-      </div>
-
-      <!-- Información de Documento -->
-      <div class="form-section">
-        <h3 class="section-title">Información de Identidad</h3>
-        
-        <!-- Tipo de Documento -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Tipo de Documento</ion-label>
-          <ion-select formControlName="documentType" placeholder="Selecciona tipo" interface="action-sheet">
-            <ion-select-option *ngFor="let type of documentTypes" [value]="type.value">
-              {{ type.label }}
-            </ion-select-option>
-          </ion-select>
-          <ion-icon name="card-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-
-        <!-- Número de Documento -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Número de Documento</ion-label>
-          <ion-input 
-            type="text" 
-            formControlName="documentNumber" 
-            placeholder="Tu número de documento"
-            autocomplete="off"
-            [class.invalid]="isSubmitted && documentNumber?.invalid"
-          ></ion-input>
-          <ion-icon name="document-text-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-
-        <!-- Error de Documento -->
-        <ion-text 
-          *ngIf="isSubmitted && documentNumber?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="documentNumber?.errors?.['required']">El número de documento es requerido</span>
-          <span *ngIf="documentNumber?.errors?.['minlength']">Mínimo 5 caracteres</span>
-        </ion-text>
+        <!-- Fila de Documento -->
+        <ion-row class="input-row">
+          <ion-col size="4" class="ion-no-padding padding-right-sm">
+            <div class="input-group">
+              <ion-label position="stacked" class="premium-label">Doc Type</ion-label>
+              <ion-select formControlName="documentType" interface="popover" class="premium-input custom-select">
+                <ion-select-option *ngFor="let type of documentTypes" [value]="type.value">{{ type.label }}</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+          <ion-col size="8" class="ion-no-padding padding-left-sm">
+            <div class="input-group">
+              <ion-label position="stacked" class="premium-label">Doc Number</ion-label>
+              <ion-input class="premium-input" type="text" formControlName="documentNumber" placeholder="12345678"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
 
         <!-- País -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">País</ion-label>
-          <ion-select formControlName="country" placeholder="Selecciona país" interface="action-sheet">
-            <ion-select-option *ngFor="let country of countries" [value]="country.value">
-              {{ country.label }}
-            </ion-select-option>
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Country</ion-label>
+          <ion-select formControlName="country" interface="popover" class="premium-input custom-select">
+            <ion-select-option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</ion-select-option>
           </ion-select>
-          <ion-icon name="globe-outline" slot="start" color="medium"></ion-icon>
-        </ion-item>
-      </div>
+        </div>
 
-      <!-- Información de Seguridad -->
-      <div class="form-section">
-        <h3 class="section-title">Seguridad</h3>
-        
+        <!-- Email -->
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Email</ion-label>
+          <ion-input class="premium-input" type="email" formControlName="email" placeholder="example@gmail.com"></ion-input>
+        </div>
+
         <!-- Contraseña -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Contraseña</ion-label>
-          <ion-input 
-            [type]="showPassword ? 'text' : 'password'" 
-            formControlName="password" 
-            placeholder="Crea una contraseña segura"
-            autocomplete="new-password"
-            [class.invalid]="isSubmitted && password?.invalid"
-          ></ion-input>
-          <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
-          <ion-button 
-            slot="end" 
-            fill="clear" 
-            size="small" 
-            (click)="togglePasswordVisibility('password')"
-            color="medium"
-          >
-            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-          </ion-button>
-        </ion-item>
-
-        <!-- Error de Contraseña -->
-        <ion-text 
-          *ngIf="isSubmitted && password?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
-          <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
-        </ion-text>
-
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Password</ion-label>
+          <div class="password-wrapper">
+            <ion-input class="premium-input" [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••"></ion-input>
+            <ion-button fill="clear" class="eye-btn" (click)="togglePasswordVisibility('password')">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" color="medium"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+        
         <!-- Confirmar Contraseña -->
-        <ion-item class="input-item">
-          <ion-label position="floating" color="primary">Confirmar Contraseña</ion-label>
-          <ion-input 
-            [type]="showConfirmPassword ? 'text' : 'password'" 
-            formControlName="confirmPassword" 
-            placeholder="Repite tu contraseña"
-            autocomplete="new-password"
-            [class.invalid]="isSubmitted && confirmPassword?.invalid"
-          ></ion-input>
-          <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
-          <ion-button 
-            slot="end" 
-            fill="clear" 
-            size="small" 
-            (click)="togglePasswordVisibility('confirmPassword')"
-            color="medium"
-          >
-            <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-          </ion-button>
-        </ion-item>
-
-        <!-- Error de Confirmación -->
-        <ion-text 
-          *ngIf="isSubmitted && confirmPassword?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          <span *ngIf="confirmPassword?.errors?.['required']">Confirma tu contraseña</span>
-          <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
-        </ion-text>
-      </div>
-
-      <!-- Términos y Condiciones -->
-      <div class="form-section">
-        <ion-item class="terms-item">
-          <ion-checkbox 
-            formControlName="termsAccepted"
-            [class.invalid]="isSubmitted && termsAccepted?.invalid"
-          ></ion-checkbox>
-          <ion-label class="terms-label">
-            Acepto los 
-            <ion-button fill="clear" size="small" (click)="showTermsAndConditions()" color="primary">
-              Términos y Condiciones
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Confirm Password</ion-label>
+          <div class="password-wrapper">
+            <ion-input class="premium-input" [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="••••••••"></ion-input>
+            <ion-button fill="clear" class="eye-btn" (click)="togglePasswordVisibility('confirmPassword')">
+              <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'" color="medium"></ion-icon>
             </ion-button>
-            y la 
-            <ion-button fill="clear" size="small" (click)="showPrivacyPolicy()" color="primary">
-              Política de Privacidad
-            </ion-button>
-          </ion-label>
-        </ion-item>
+          </div>
+        </div>
 
-        <!-- Error de Términos -->
-        <ion-text 
-          *ngIf="isSubmitted && termsAccepted?.invalid" 
-          color="danger" 
-          class="error-text"
-        >
-          Debes aceptar los términos y condiciones
-        </ion-text>
-      </div>
+        <!-- Error global de validación -->
+        <div class="error-msg" *ngIf="isSubmitted && registerForm.invalid">
+          Please fill all required fields properly.
+        </div>
 
-      <!-- Botón de Registro -->
-      <ion-button 
-        type="submit" 
-        expand="block" 
-        class="register-button"
-        [disabled]="isLoading || registerForm.invalid"
-      >
-        <ion-spinner *ngIf="isLoading" name="circles" slot="start"></ion-spinner>
-        {{ isLoading ? 'Creando cuenta...' : 'Crear Cuenta' }}
-      </ion-button>
-    </form>
+        <!-- Botón de Registro -->
+        <ion-button type="submit" expand="block" class="premium-btn ion-margin-top" [disabled]="isLoading || registerForm.invalid">
+          <ion-spinner *ngIf="isLoading" name="crescent" slot="start"></ion-spinner>
+          {{ isLoading ? 'REGISTERING...' : 'REGISTER' }}
+        </ion-button>
+      </form>
+    </div>
 
     <!-- Enlace a Login -->
-    <div class="login-link">
+    <div class="login-link ion-margin-top">
       <ion-text color="medium">
-        ¿Ya tienes cuenta? 
-        <ion-button 
-          fill="clear" 
-          size="small" 
-          (click)="goToLogin()"
-          color="primary"
-        >
-          Inicia sesión aquí
-        </ion-button>
+        I have an account? <a (click)="goToLogin()" class="action-link">Log in</a>
       </ion-text>
     </div>
   </div>
 </ion-content>
-
-<style>
-.register-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.logo-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 12px;
-}
-
-.app-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--ion-color-primary);
-  margin: 0;
-}
-
-.app-subtitle {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  margin: 4px 0 0 0;
-}
-
-.register-form {
-  width: 100%;
-}
-
-.form-section {
-  margin-bottom: 24px;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
-  margin: 0 0 16px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--ion-color-light);
-}
-
-.input-item {
-  margin-bottom: 12px;
-  --border-radius: 12px;
-  --highlight-height: 0;
-}
-
-.input-item.invalid {
-  --highlight-color: var(--ion-color-danger);
-}
-
-.terms-item {
-  --border-radius: 12px;
-  --min-height: 60px;
-}
-
-.terms-label {
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.error-text {
-  font-size: 12px;
-  margin-top: -8px;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.register-button {
-  margin-top: 24px;
-  --border-radius: 12px;
-  height: 48px;
-  font-weight: 600;
-}
-
-.login-link {
-  text-align: center;
-  margin-top: 32px;
-}
-
-.login-link ion-button {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-@media (max-width: 480px) {
-  .register-container {
-    padding: 16px;
-  }
-  
-  .logo {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .app-title {
-    font-size: 18px;
-  }
-  
-  .section-title {
-    font-size: 14px;
-  }
-}
-</style>

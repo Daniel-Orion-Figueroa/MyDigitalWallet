@@ -1,104 +1,89 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Mi Billetera</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="home-container">
-    <!-- Balance Section -->
-    <div class="balance-section">
-      <ion-card class="balance-card">
-        <ion-card-content>
-          <div class="balance-content">
-            <ion-text color="medium">
-              <h3>Saldo Total</h3>
-            </ion-text>
-            <div class="balance-amount">
-              <h1>{{ balance | currency:'COP':'symbol':'1.0-0' }}</h1>
-            </div>
-            <ion-button fill="clear" size="small" (click)="toggleBalanceVisibility()" color="primary">
-              <ion-icon [name]="showBalance ? 'eye-off-outline' : 'eye-outline'" slot="start"></ion-icon>
-              {{ showBalance ? 'Ocultar' : 'Mostrar' }}
-            </ion-button>
-          </div>
-        </ion-card-content>
-      </ion-card>
+<ion-content [fullscreen]="true">
+  <div class="home-container ion-padding">
+    
+    <!-- Top Header Profile -->
+    <div class="top-header ion-margin-bottom">
+      <div class="user-greeting">
+        <h1 class="greeting-title">Hello {{ (currentUser$ | async)?.firstName || 'User' }}!</h1>
+        <p class="greeting-subtitle">Let's save your money.</p>
+      </div>
+      <div class="profile-actions">
+        <ion-button fill="clear" color="light" class="notification-btn">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+        <ion-avatar class="user-avatar" (click)="openProfile()">
+          <img src="https://ui-avatars.com/api/?name={{ (currentUser$ | async)?.firstName || 'U' }}&background=00d2ff&color=fff" />
+        </ion-avatar>
+      </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="actions-section">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6">
-            <ion-button expand="block" fill="outline" class="action-button" (click)="goToAddCard()">
-              <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-              Agregar Tarjeta
-            </ion-button>
-          </ion-col>
-          <ion-col size="6">
-            <ion-button expand="block" fill="outline" class="action-button" (click)="goToPayment()">
-              <ion-icon name="card-outline" slot="start"></ion-icon>
-              Pagar
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-
-    <!-- Cards List -->
-    <div class="cards-section">
-      <ion-text color="dark">
-        <h3>Mis Tarjetas</h3>
-      </ion-text>
-      <ion-list *ngIf="cards.length > 0; else noCards">
-        <ion-item *ngFor="let card of cards" button (click)="selectCard(card)">
-          <ion-icon name="card-outline" slot="start" color="primary"></ion-icon>
-          <ion-label>
-            <h2>{{ card.type.toUpperCase() }} ****{{ card.number.slice(-4) }}</h2>
-            <p>{{ card.holderName }}</p>
-          </ion-label>
-          <ion-icon name="chevron-forward-outline" slot="end" color="medium"></ion-icon>
-        </ion-item>
-      </ion-list>
+    <!-- No Cards / Active Card Area -->
+    <div class="card-display-area ion-margin-bottom">
+      <ng-container *ngIf="cards.length > 0; else noCards">
+        <!-- Placeholder para la tarjeta renderizada en vez de la lista. Mostramos la principal -->
+        <app-card [card]="cards[0]"></app-card>
+      </ng-container>
+      
       <ng-template #noCards>
-        <ion-card>
-          <ion-card-content class="ion-text-center">
-            <ion-icon name="card-outline" size="large" color="medium"></ion-icon>
-            <ion-text color="medium">
-              <p>No tienes tarjetas agregadas</p>
-            </ion-text>
-            <ion-button fill="clear" (click)="goToAddCard()" color="primary">
-              Agregar primera tarjeta
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
+        <div class="empty-card-state glass-panel">
+          <ion-icon name="card-outline" class="empty-icon"></ion-icon>
+          <p class="empty-text">No cards available.</p>
+          <ion-button class="premium-btn add-btn-small" (click)="goToAddCard()">
+            + ADD CARD
+          </ion-button>
+        </div>
       </ng-template>
     </div>
 
-    <!-- Recent Transactions -->
-    <div class="transactions-section" *ngIf="transactions.length > 0">
-      <ion-text color="dark">
-        <h3>Transacciones Recientes</h3>
-      </ion-text>
-      <ion-list>
-        <ion-item *ngFor="let transaction of transactions.slice(0, 5)">
-          <ion-icon [name]="transaction.type === 'income' ? 'arrow-up-circle-outline' : 'arrow-down-circle-outline'"
-            slot="start" [color]="transaction.type === 'income' ? 'success' : 'danger'"></ion-icon>
-          <ion-label>
-            <h2>{{ transaction.description }}</h2>
-            <p>{{ transaction.date | date:'short' }}</p>
-          </ion-label>
-          <ion-text [color]="transaction.type === 'income' ? 'success' : 'danger'" slot="end">
-            {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | currency:'COP':'symbol':'1.0-0' }}
-          </ion-text>
-        </ion-item>
-      </ion-list>
+    <!-- Quick Actions (Squares) -->
+    <div class="quick-actions-row ion-margin-bottom">
+      <div class="action-square btn-cyan">
+        <ion-icon name="layers-outline"></ion-icon>
+        <span>Change Card</span>
+      </div>
+      
+      <div class="action-square btn-green" (click)="goToPayment()">
+        <ion-icon name="card-outline"></ion-icon>
+        <span>Pay Now</span>
+      </div>
+
+      <div class="action-square btn-dark" (click)="goToAddCard()">
+        <ion-icon name="add-outline"></ion-icon>
+        <span>Add Card</span>
+      </div>
     </div>
+
+    <!-- Card History -->
+    <div class="history-section">
+      <div class="history-header">
+        <h2 class="history-title">Card History</h2>
+        <a class="view-all-link">View All</a>
+      </div>
+
+      <div class="history-content">
+        <ng-container *ngIf="transactions.length > 0; else noTransactions">
+          <ion-list class="transparent-list">
+            <ion-item *ngFor="let transaction of transactions.slice(0, 5)" class="history-item glass-panel">
+              <ion-icon [name]="transaction.type === 'income' ? 'arrow-up-outline' : 'arrow-down-outline'"
+                slot="start" [color]="transaction.type === 'income' ? 'success' : 'danger'" class="tx-icon"></ion-icon>
+              <ion-label>
+                <h3 class="tx-desc">{{ transaction.description }}</h3>
+                <p class="tx-date">{{ transaction.date | date:'short' }}</p>
+              </ion-label>
+              <ion-text [color]="transaction.type === 'income' ? 'success' : 'light'" slot="end" class="tx-amount">
+                {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | currency:'COP':'symbol':'1.0-0' }}
+              </ion-text>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+
+        <ng-template #noTransactions>
+          <div class="empty-transactions">
+            <p>No transactions with this selected card.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
   </div>
 </ion-content>

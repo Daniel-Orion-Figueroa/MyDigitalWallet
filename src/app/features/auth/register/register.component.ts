@@ -18,7 +18,9 @@ import {
   IonSpinner,
   IonText,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonRow,
+  IonCol
 } from "@ionic/angular/standalone";
 import { AuthResult, AuthService, RegisterData } from '../../../core/services/auth.service';
 
@@ -32,7 +34,7 @@ import { AuthResult, AuthService, RegisterData } from '../../../core/services/au
     ReactiveFormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonImg, IonItem, IonLabel, 
     IonInput, IonIcon, IonText, IonButton, IonSelect, IonSelectOption, 
-    IonButtons, IonBackButton, IonSpinner, IonCheckbox
+    IonButtons, IonBackButton, IonSpinner, IonCheckbox, IonRow, IonCol
   ]
 })
 export class RegisterComponent implements OnInit {

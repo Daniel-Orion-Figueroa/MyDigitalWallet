@@ -3,72 +3,196 @@
   margin: 0 auto;
 }
 
-.balance-section {
-  margin-bottom: 24px;
+/* Top Header */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
 }
 
-.balance-card {
-  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
-  color: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.balance-content {
-  text-align: center;
-  padding: 20px;
-}
-
-.balance-content h3 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.balance-amount h1 {
-  margin: 0 0 16px 0;
-  font-size: 32px;
+.greeting-title {
+  font-size: 24px;
   font-weight: 700;
+  margin: 0 0 5px 0;
+  color: white;
 }
 
-.actions-section {
-  margin-bottom: 24px;
+.greeting-subtitle {
+  font-size: 14px;
+  color: #a1a7af;
+  margin: 0;
 }
 
-.action-button {
-  --border-radius: 12px;
-  height: 48px;
-  font-weight: 600;
-  --border-color: var(--ion-color-primary);
-  --color: var(--ion-color-primary);
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.cards-section {
-  margin-bottom: 24px;
+.notification-btn {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
 }
 
-.cards-section h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--ion-color-secondary);
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.transactions-section h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
+/* Card Area */
+.card-display-area {
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-ion-item {
-  --border-radius: 12px;
+.empty-card-state {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #a1a7af;
+  margin-bottom: 10px;
+}
+
+.empty-text {
+  color: #a1a7af;
+  margin: 0 0 15px 0;
+}
+
+.add-btn-small {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  height: 36px;
+  font-size: 12px;
+}
+
+/* Quick Actions */
+.quick-actions-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.action-square {
+  flex: 1;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.action-square:active {
+  transform: scale(0.95);
+}
+
+.action-square ion-icon {
+  font-size: 28px;
   margin-bottom: 8px;
 }
 
-ion-card {
-  --background: var(--ion-color-light);
-  border-radius: 12px;
-  box-shadow: none;
+.action-square span {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-cyan {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 210, 255, 0.3);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #2fdf75 0%, #15b955 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(47, 223, 117, 0.3);
+}
+
+.btn-dark {
+  background: #1e2023;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* History Section */
+.history-section {
+  margin-top: 30px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.history-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.view-all-link {
+  font-size: 13px;
+  color: var(--ion-color-success);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.transparent-list {
+  background: transparent;
+}
+
+.history-item {
+  --background: transparent;
+  --padding-start: 15px;
+  --inner-padding-end: 15px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+}
+
+.tx-icon {
+  font-size: 24px;
+}
+
+.tx-desc {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+}
+
+.tx-date {
+  font-size: 12px;
+  color: #a1a7af;
+}
+
+.tx-amount {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.empty-transactions {
+  text-align: center;
+  padding: 30px 0;
+  color: #a1a7af;
+  font-size: 14px;
 }

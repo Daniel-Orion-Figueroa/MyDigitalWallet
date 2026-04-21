@@ -35,3 +35,71 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* 
+ * Premium Global Utilities
+ * -----------------------------------------------------
+ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif !important;
+  --ion-font-family: 'Outfit', sans-serif !important;
+}
+
+/* Glassmorphism Panel Utility */
+.glass-panel {
+  background: var(--premium-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--premium-glass-border);
+  border-radius: var(--premium-border-radius);
+  box-shadow: var(--premium-shadow);
+}
+
+/* Premium Gradient Button */
+.premium-btn {
+  --background: var(--premium-gradient-primary);
+  --box-shadow: var(--premium-shadow-blue);
+  --border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.premium-btn:active {
+  transform: scale(0.96);
+}
+
+/* Global Custom Inputs */
+.premium-input {
+  --background: rgba(255, 255, 255, 0.05);
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --color: #ffffff;
+  --placeholder-color: #a1a7af;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.premium-input.has-focus {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* Base App Background for Dark Theme */
+ion-content {
+  --background: #0d1117;
+}
+
+/* Top curved header style typical in premium apps */
+.curved-header-bg {
+  background: var(--premium-gradient-primary);
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  padding-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 122, 255, 0.2);
+}

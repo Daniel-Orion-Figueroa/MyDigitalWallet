@@ -21,8 +21,10 @@ export interface Card {
   providedIn: 'root'
 })
 export class CardService {
-  private firestoreService = inject(FirestoreService);
-  private authService = inject(AuthService);
+  constructor(
+    private firestoreService: FirestoreService,
+    private authService: AuthService
+  ) {}
 
   // Luhn Algorithm for card number validation
   private validateCardNumber(cardNumber: string): boolean {

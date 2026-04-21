@@ -1,97 +1,79 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>Realizar Pago</ion-title>
-        <ion-buttons slot="start">
-            <ion-back-button defaultHref="/home"></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <!-- Header curvo -->
+  <div class="curved-header-bg ion-padding-top ion-padding-horizontal">
+    <ion-buttons class="back-btn-container">
+      <ion-back-button defaultHref="/home" color="light" text=""></ion-back-button>
+    </ion-buttons>
+    <div class="header-content ion-margin-top ion-margin-bottom">
+      <h1 class="header-title">Send Money</h1>
+      <p class="header-subtitle">Payment Simulator</p>
+    </div>
+  </div>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-    <div class="payment-container">
-        <!-- Logo -->
-        <div class="logo-section">
-            <ion-img src="/src/assets/logo/MyDigitalWalletlogo.png" alt="MyDigitalWallet Logo" class="logo"></ion-img>
-            <h2 class="app-title">Realizar Pago</h2>
-            <p class="app-subtitle">Simula un pago con tu tarjeta</p>
+  <div class="payment-container ion-padding">
+    <div class="glass-panel ion-padding form-wrapper">
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Monto -->
+        <div class="amount-container ion-margin-bottom">
+          <ion-label class="premium-label text-center">Amount (COP)</ion-label>
+          <div class="amount-input-wrapper">
+            <span class="currency-symbol">$</span>
+            <ion-input type="tel" formControlName="amount" placeholder="0" class="massive-amount-input"></ion-input>
+          </div>
+          <div class="error-msg text-center" *ngIf="isSubmitted && amount?.invalid">
+            Please enter a valid amount (Min $1000).
+          </div>
         </div>
 
-        <!-- Formulario de Pago -->
-        <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
-            <!-- Monto -->
-            <ion-item class="input-item">
-                <ion-label position="floating" color="primary">Monto a Pagar (COP)</ion-label>
-                <ion-input type="tel" formControlName="amount" placeholder="10000"
-                    [class.invalid]="isSubmitted && amount?.invalid"></ion-input>
-                <ion-icon name="cash-outline" slot="start" color="medium"></ion-icon>
-            </ion-item>
-            <ion-text *ngIf="isSubmitted && amount?.invalid" color="danger" class="error-text">
-                <span *ngIf="amount?.errors?.['required']">El monto es requerido</span>
-                <span *ngIf="amount?.errors?.['min']">El monto mínimo es $1.000</span>
-            </ion-text>
+        <!-- Descripción -->
+        <div class="input-group">
+          <ion-label position="stacked" class="premium-label">Description / Note</ion-label>
+          <ion-input class="premium-input" type="text" formControlName="description" placeholder="Ex: Dinner with friends"></ion-input>
+          <div class="error-msg" *ngIf="isSubmitted && description?.invalid">
+            Description is required.
+          </div>
+        </div>
 
-            <!-- Descripción -->
-            <ion-item class="input-item">
-                <ion-label position="floating" color="primary">Descripción del Pago</ion-label>
-                <ion-input type="text" formControlName="description" placeholder="Compra en tienda, restaurante, etc."
-                    [class.invalid]="isSubmitted && description?.invalid"></ion-input>
-                <ion-icon name="document-text-outline" slot="start" color="medium"></ion-icon>
-            </ion-item>
-            <ion-text *ngIf="isSubmitted && description?.invalid" color="danger" class="error-text">
-                <span *ngIf="description?.errors?.['required']">La descripción es requerida</span>
-                <span *ngIf="description?.errors?.['minlength']">Mínimo 3 caracteres</span>
-            </ion-text>
+        <!-- Selección de Tarjeta -->
+        <div class="card-selection-group ion-margin-top">
+          <ion-label position="stacked" class="premium-label">Select Source Card</ion-label>
+          
+          <ng-container *ngIf="cards.length > 0; else noCards">
+            <ion-radio-group formControlName="selectedCardId" (ionChange)="onCardChange($event)">
+              <div class="card-option" *ngFor="let card of cards" [class.selected]="selectedCard?.id === card.id">
+                <ion-radio [value]="card.id" class="hidden-radio"></ion-radio>
+                <div class="card-option-content" (click)="paymentForm.get('selectedCardId')?.setValue(card.id); onCardChange({detail: {value: card.id}})">
+                  <div class="card-icon-wrapper">
+                    <ion-icon [name]="card.type === 'visa' ? 'logo-venmo' : (card.type === 'mastercard' ? 'disc-outline' : 'card-outline')"></ion-icon>
+                  </div>
+                  <div class="card-details">
+                    <h4>{{ card.type | uppercase }} ****{{ card.number.slice(-4) }}</h4>
+                    <p>{{ card.holderName }}</p>
+                  </div>
+                  <ion-icon name="checkmark-circle" color="success" class="check-icon" *ngIf="selectedCard?.id === card.id"></ion-icon>
+                </div>
+              </div>
+            </ion-radio-group>
+          </ng-container>
 
-            <!-- Selección de Tarjeta -->
-            <div class="card-selection">
-                <ion-text color="dark">
-                    <h3>Seleccionar Tarjeta</h3>
-                </ion-text>
-                <ion-list *ngIf="cards.length > 0">
-                    <ion-radio-group formControlName="selectedCardId" (ionChange)="onCardChange($event)">
-                        <ion-item *ngFor="let card of cards" class="card-item">
-                            <ion-radio slot="start" [value]="card.id"></ion-radio>
-                            <ion-icon [name]="card.type === 'visa' ? 'card-outline' : 'card-outline'" slot="start"
-                                color="primary"></ion-icon>
-                            <ion-label>
-                                <h2>{{ card.type.toUpperCase() }} ****{{ card.number.slice(-4) }}</h2>
-                                <p>{{ card.holderName }}</p>
-                            </ion-label>
-                        </ion-item>
-                    </ion-radio-group>
-                </ion-list>
-                <ion-text *ngIf="isSubmitted && selectedCardId?.invalid" color="danger" class="error-text">
-                    <span>Debes seleccionar una tarjeta</span>
-                </ion-text>
+          <ng-template #noCards>
+            <div class="empty-cards-msg">
+              You don't have any cards added yet.
             </div>
+          </ng-template>
 
-            <!-- Resumen del Pago -->
-            <ion-card *ngIf="selectedCard && amount?.value && description?.value" class="payment-summary">
-                <ion-card-header>
-                    <ion-card-title>Resumen del Pago</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                    <div class="summary-item">
-                        <span>Monto:</span>
-                        <strong>{{ amount?.value | currency:'COP':'symbol':'1.0-0' }}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Descripción:</span>
-                        <strong>{{ description?.value }}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Tarjeta:</span>
-                        <strong>{{ selectedCard.type.toUpperCase() }} ****{{ selectedCard.number.slice(-4) }}</strong>
-                    </div>
-                </ion-card-content>
-            </ion-card>
+          <div class="error-msg text-center" *ngIf="isSubmitted && paymentForm.get('selectedCardId')?.invalid">
+            Please select a card to pay with.
+          </div>
+        </div>
 
-            <!-- Botón de Pago -->
-            <ion-button type="submit" expand="block" class="payment-button"
-                [disabled]="isLoading || paymentForm.invalid">
-                <ion-spinner *ngIf="isLoading" name="circles" slot="start"></ion-spinner>
-                {{ isLoading ? 'Procesando...' : 'Realizar Pago' }}
-            </ion-button>
-        </form>
+        <!-- Botón de Pago -->
+        <ion-button type="submit" expand="block" class="premium-btn payment-btn ion-margin-top" [disabled]="isLoading || (cards.length === 0)">
+          <ion-spinner *ngIf="isLoading" name="crescent" slot="start"></ion-spinner>
+          {{ isLoading ? 'PROCESSING...' : 'SEND PAYMENT' }}
+        </ion-button>
+      </form>
     </div>
+  </div>
 </ion-content>

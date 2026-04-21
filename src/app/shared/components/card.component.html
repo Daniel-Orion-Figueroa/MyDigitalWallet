@@ -1,21 +1,48 @@
-<div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-lg max-w-sm mx-auto"
+<div class="card-container" *ngIf="card"
     [ngClass]="{
-       'from-blue-500 to-blue-700': type === 'visa',
-       'from-red-500 to-red-700': type === 'mastercard'
+       'card-visa': card.type === 'visa',
+       'card-mastercard': card.type === 'mastercard',
+       'card-amex': card.type === 'amex'
      }">
-    <div class="flex justify-between items-center mb-4">
-        <span class="text-lg font-bold">{{ type.toUpperCase() }}</span>
-        <span class="text-2xl">{{ type === 'visa' ? '💳' : '💳' }}</span>
+    <div class="card-glass-overlay">
+        <!-- Top row: Type & Logo -->
+        <div class="card-top">
+            <span class="card-type">{{ card.type | uppercase }}</span>
+            <div class="card-logo">
+                <ion-icon name="logo-venmo" *ngIf="card.type === 'visa'"></ion-icon>
+                <ion-icon name="disc-outline" *ngIf="card.type === 'mastercard'"></ion-icon>
+                <ion-icon name="card-outline" *ngIf="card.type === 'amex'"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Chip icon -->
+        <div class="card-chip">
+            <ion-icon name="hardware-chip-outline"></ion-icon>
+            <ion-icon name="wifi-outline" class="contactless-icon"></ion-icon>
+        </div>
+
+        <!-- Card Number -->
+        <div class="card-number">
+            {{ card.number | cardNumber }}
+        </div>
+
+        <!-- Bottom row: Holder & Expiry -->
+        <div class="card-bottom">
+            <div class="holder-info">
+                <div class="info-label">Card Holder</div>
+                <div class="info-value">{{ card.holderName || 'UNKNOWN NAME' | uppercase }}</div>
+            </div>
+            <div class="expiry-info">
+                <div class="info-label">Expires</div>
+                <div class="info-value">{{ card.expiryMonth }}/{{ card.expiryYear }}</div>
+            </div>
+        </div>
     </div>
-    <div class="text-xl font-mono mb-2">{{ number | cardNumber }}</div>
-    <div class="flex justify-between">
-        <div>
-            <div class="text-xs uppercase">Card Holder</div>
-            <div class="text-sm">{{ holderName }}</div>
-        </div>
-        <div>
-            <div class="text-xs uppercase">Expires</div>
-            <div class="text-sm">{{ expiryDate }}</div>
-        </div>
+</div>
+
+<!-- Fallback if card is null -->
+<div class="card-container empty-card" *ngIf="!card">
+    <div class="card-glass-overlay">
+        <ion-spinner name="crescent"></ion-spinner>
     </div>
 </div>

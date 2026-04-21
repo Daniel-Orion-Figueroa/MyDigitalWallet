@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AddCardRoutingModule } from './add-card-routing.module';
 import { AddCardComponent } from './add-card.component';
+import { SharedModule } from '../../shared/shared-module';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { AddCardComponent } from './add-card.component';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AddCardRoutingModule
+    AddCardRoutingModule,
+    SharedModule
   ],
   declarations: [AddCardComponent]
 })
